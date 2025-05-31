@@ -26,6 +26,10 @@ resource aoai 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 resource gpt4oMiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
   name: 'gpt-4o-mini'
   parent: aoai
+  sku: {
+    name: 'Standard'
+    capacity: 10
+  }
   properties: {
     model: {
       format: 'OpenAI'
