@@ -37,5 +37,6 @@ resource gpt4oMiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@2
 
 output aoaiName string = aoai.name
 output aoaiId string = aoai.id
+output aoaiEndpoint string = aoai.properties.endpoint
 output gpt4oMiniDeploymentName string = gpt4oMiniDeployment.name
 output gpt4oMiniDeploymentId string = gpt4oMiniDeployment.id

@@ -6,9 +6,9 @@ metadata:
 services:
     custom-skills:
         project: src/custom-skills
-        host: containerapp
+        host: appservice
         language: dotnet
     mvc:
         project: src/web/ui/mvc
-        host: containerapp
+        host: appservice
         language: dotnet

@@ -71,6 +71,8 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
 
 output id string = storage.id
 output storageAccountName string = storage.name
+output storageAccountId string = storage.id
+output storageAccountEndpoint string = storage.properties.primaryEndpoints.blob
 output primaryEndpoints object = storage.properties.primaryEndpoints
 output blobEndpoint string = storage.properties.primaryEndpoints.blob
 // output storageSymbolicName resource 'Microsoft.Storage/storageAccounts@2023-01-01' = storage

@@ -2,52 +2,48 @@
 
 PHI Deidentification Portal
 
-Installation Instructions
+## Deployment Instructions using Azure Developer CLI (azd)
 
 ![318910463-a3d9905d-6df7-4e2d-b0eb-d0c4e7e2ecb5](https://github.com/microsoft/PHIDeIDPortal/assets/112185610/1f74e6b9-0f94-40db-9fa8-aadd04433d24)
- 
-Deployment Steps –
-1. Clone or Fork repo  
-2. Create a new Storage Account  
-  a. **az storage account create** -n _storageaccount_ -g _resourcegroup_ --sku Standard_LRS
-  
-3. Create a Storage Account container for document uploads  
-  a. **az storage container create** -n _container_ --account-name _storageaccount_  
-  
-4. Create a new Azure AI multi-service resource  
-  a. **az cognitiveservices account create** --name _aiservice_ --location _location_ --resource-group _resourcegroup_ --kind CognitiveServices --sku s0 --yes  
-  
-5. Create a new Azure AI Search instance  
-  a. **az search service create** --name _searchservice_ --resource-group _resourcegroup_ –sku standard
 
-6.  Create the Cosmos NoSQL database  
-  a. **az cosmosdb create** --name _cosmosdb_ --resource-group _resourcegroup_ --kind GlobalDocumentDB --locations regionName = _location_  
-  b. **az cosmosdb sql database create** -g _resourcegroup_ -a _cosmosaccountname_ -n deid --throughput 400  
-  c. **az cosmosdb sql container create** -g _resourcegroup_ -a _cosmosaccountname_ -d deid -n metadata --partition-key-path "/Uri"  
-  
-8. Create two new App Service Plans – one for the Web application and one for standard Functions  
-  a. **az appservice plan create** -g _resourcegroup_ -n _plan1_ --sku S1  
-  b. **az appservice plan create** -g _resourcegroup_ -n _plan2_ --sku S1  
-  
-9. Create a new Azure Function instance for the metadata sync and custom skill  
-  a. **az functionapp create** --resource-group _resourcegroup_ --name _functionappname_ --os-type Windows --runtime dotnet --storage-account _storageaccount_ --plan _plan1_  
-  b. Publish the Azure Function to the Function App Service   
-  C. (Azure managed identity security for Storage) **az role assignment create** --assignee _systemassignedidentityguid_ --role "Storage Blob Data Contributor" --scope _storageaccountid_  
+### Prerequisites
+1. Install [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd)
+2. Install [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+3. Login to Azure: `az login`
 
-10. Create the Web application for the DeID Web Portal  
-  a. **az webapp create** --resource-group _resourcegroup_ --name _webname_ --runtime dotnet:8 --plan _plan2_  
-  b. **az resource update** --resource-group resourcegroup --name scm --namespace Microsoft.Web --resource-type basicPublishingCredentialsPolicies --_parent sites/webname_ --set properties.allow=true  
-  c. Publish the Web solution to the Web App Service  
-  d. **az webapp identity assign** -g resourcegroup -n _webname_ (results used in e.)  
-  e. (Azure managed identity security for Storage) **az role assignment create** --assignee _systemassignedidentityguid_ --role "Storage Blob Data Contributor" --scope _storageaccountid_  
-  f. **az ad app create** --display-name _appid_ --web-redirect-uris _https://{webname}.azurewebsites.net/signin-oidc_ --enable-id-token-issuance _true_  
-  g. Modify App Registration to include Group Claims (modify groupMembershipClaims property)  
-  h. Add Entra group to support Admins. Note group name for updating the web app configuration value  
-  i. (Azure managed identity security for Cosmos) **az cosmosdb sql role assignment create** -g _resourcegroup_ -a _cosmosaccountname_ --role-definition-name "Cosmos DB Built-in Data Contributor"` --scope "/" --principal-id _systemassignedidentityguid_
+### Deployment Steps
+1. Clone or Fork this repository
+2. Navigate to the project directory: `cd PHIDeIDPortal`
+3. Initialize azd environment: `azd env new <environment-name>`
+4. Set target subscription: `azd env set AZURE_SUBSCRIPTION_ID e748553e-76b8-4431-af0b-4d479db02282`
+5. Set target location: `azd env set AZURE_LOCATION <your-preferred-region>`
+6. Deploy infrastructure and applications: `azd up`
+7. Configure AI Search components:
+   - Create the AI Search Index using `src/search-config/piiredaction-index.json`
+   - Create the Skillset using `src/search-config/unstructured-skillset-aisearch.json`
+   - Create the Indexer using `src/search-config/unstructured-indexer.json`
+8. Upload test documents to the storage container and verify the indexer processes them
 
-12.	Deploy the metadata sync and custom Function app by configuring the Azure Function to pull from your forked GH repo or by cloning the repo and doing a publish.
-13.	Create the AI Search Index, Custom Skill and Indexer definitions (in that order) using the three JSON configuration files in the search-config folder of the Repo
-14.	Upload documents to the Blob Storage Container created in #3 and ensure the Indexer is running.
+### Post-Deployment Configuration
+- Configure Azure AD app registration for authentication
+- Set up Entra group for admin access
+- Update GroupClaimAdminId in app settings
+
+### Development Setup
+For local development, copy `src/custom-skills/local.settings.json.template` to `src/custom-skills/local.settings.json` and fill in the appropriate values from your Azure deployment.
+
+### Hybrid Approach Recommendations
+Pure azd is recommended for this deployment as it handles:
+- Infrastructure provisioning
+- Application deployment
+- Environment variable configuration
+- Role assignments
+
+Consider hybrid approaches (azd + custom scripts) when you need:
+- Complex post-deployment configuration (AI Search setup)
+- Custom data seeding or migration scripts
+- Integration with external systems
+- Advanced monitoring and alerting setup
 
 This project conforms to the MIT licensing terms. Code is not indended as a complete production-ready solution and no warranty is implied.
 

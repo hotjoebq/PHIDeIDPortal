@@ -20,3 +20,7 @@ resource cognitiveAccount 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 	
 	tags: tags
 }
+
+output cognitiveAccountName string = cognitiveAccount.name
+output cognitiveAccountId string = cognitiveAccount.id
+output cognitiveAccountEndpoint string = cognitiveAccount.properties.endpoint

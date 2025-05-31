@@ -15,7 +15,7 @@ param location string = resourceGroup().location
 
 
 // resource existingStorage 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
-//   name: 'storage'
+// ï¿½ name: 'storage'
 // }
 
 
@@ -28,8 +28,8 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     siteConfig: {
       appSettings: [
         {
-          name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=core.windows.net'
+          name: 'AzureWebJobsStorage__accountName'
+          value: storageAccountName
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -40,7 +40,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           value: runtime
         }
       ]
-      use32BitWorkerProcess: true
+      use32BitWorkerProcess: false
       linuxFxVersion: ''
     }
     httpsOnly: true

@@ -59,7 +59,7 @@
       "name": "OpenAiRedactionFunction",
       "description": "Custom skill for OpenAI-powered content redaction",
       "context": "/document",
-      "uri": "{uri}",
+      "uri": "${AZURE_FUNCTION_APP_ENDPOINT}/api/OpenAiRedactionFunction",
       "httpMethod": "POST",
       "timeout": "PT1M",
       "batchSize": 1000,
@@ -111,7 +111,7 @@
       "name": "MetadataSyncFunction",
       "description": "Custom skill to sync metadata with Cosmos record",
       "context": "/document",
-      "uri": "{uri}",
+      "uri": "${AZURE_FUNCTION_APP_ENDPOINT}/api/MetadataSyncFunction",
       "httpMethod": "POST",
       "timeout": "PT30S",
       "batchSize": 1000,
@@ -151,7 +151,7 @@
       "name": "OpenAIPIIRedactionSkill",
       "description": "PII redaction using OpenAI's detection capabilities",
       "context": "/document/merged_content",
-      "uri": "YOUR_FUNCTION_ENDPOINT_HERE",
+      "uri": "${AZURE_FUNCTION_APP_ENDPOINT}/api/OpenAiRedactionFunction",
       "httpMethod": "POST",
       "timeout": "PT30S",
       "batchSize": 1,
@@ -169,7 +169,7 @@
         }
       ],
       "httpHeaders": {
-        "api-key": "YOUR_FUNCTION_KEY_HERE"
+        "x-functions-key": "${AZURE_FUNCTION_APP_KEY}"
       }
     }
   ],

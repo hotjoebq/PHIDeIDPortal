@@ -31,3 +31,5 @@ output searchServiceName string = searchService.name
 output searchServiceId string = searchService.id
 output searchServiceLocation string = searchService.location
 output searchServiceIdentity string = searchService.identity.principalId
+output searchServiceEndpoint string = 'https://${searchService.name}.search.windows.net'
+output searchServiceApiKey string = searchService.listAdminKeys().primaryKey

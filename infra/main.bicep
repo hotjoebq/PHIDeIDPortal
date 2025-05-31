@@ -62,6 +62,9 @@ module storage './core/storage/storage-account.bicep' = {
       {
         name: 'default'
       }
+      {
+        name: 'pii-sample-unstructured'
+      }
     ]
   }
 }
@@ -193,27 +196,38 @@ module aoai './core/ai/aoai.bicep' = {
   }
 }
 
-// resource storageBlobContributorRoleAssignmentFunctionApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-//   name: guid(functionApp.name, 'Storage Blob Data Contributor') // '${abbrevs.webSitesFunctions}${resourceToken}'
-//   // scope: resourceId('Microsoft.Storage/storageAccounts', storageAccountName) // storage
-//   scope: storage.outputs.storageSymbolicName
-//   properties: {
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
-//     principalId: functionApp.outputs.functionAppPrincipalId
-//     principalType: 'ServicePrincipal'
-//   }
-// }
+resource storageBlobContributorRoleAssignmentFunctionApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(functionApp.outputs.functionAppId, 'Storage Blob Data Contributor')
+  scope: storage
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+    principalId: functionApp.outputs.functionAppPrincipalId
+    principalType: 'ServicePrincipal'
+  }
+}
 
-// resource storageBlobContributorRoleAssignmentWebApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-//   name: guid(webApp.name, 'Storage Blob Data Contributor') 
-//   scope: storage.outputs.storageSymbolicName
-//   properties: {
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
-//     principalId: webApp.outputs.webAppPrincipalId
-//     principalType: 'ServicePrincipal'
-//   }
-// }
+resource storageBlobContributorRoleAssignmentWebApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(webApp.outputs.webAppId, 'Storage Blob Data Contributor') 
+  scope: storage
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+    principalId: webApp.outputs.webAppPrincipalId
+    principalType: 'ServicePrincipal'
+  }
+}
 
-// output AZURE_CONTAINER_REGISTRY_ENDPOINT string = resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-// output AZURE_RESOURCE_CUSTOM_SKILLS_ID string = resources.outputs.AZURE_RESOURCE_CUSTOM_SKILLS_ID
-// output AZURE_RESOURCE_MVC_ID string = resources.outputs.AZURE_RESOURCE_MVC_ID
+output AZURE_LOCATION string = location
+output AZURE_TENANT_ID string = subscription().tenantId
+output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId
+output AZURE_RESOURCE_GROUP string = rg.name
+output AZURE_STORAGE_ACCOUNT_NAME string = storage.outputs.storageAccountName
+output AZURE_COSMOS_ENDPOINT string = cosmosDb.outputs.cosmosDbEndpoint
+output AZURE_SEARCH_SERVICE_ENDPOINT string = searchService.outputs.searchServiceEndpoint
+output AZURE_SEARCH_SERVICE_API_KEY string = searchService.outputs.searchServiceApiKey
+output AZURE_FUNCTION_APP_NAME string = functionApp.outputs.functionAppName
+output AZURE_WEB_APP_NAME string = webApp.outputs.webAppName
+output AZURE_OPENAI_ENDPOINT string = aoai.outputs.aoaiEndpoint
+output AZURE_COGNITIVE_SERVICES_ENDPOINT string = cognitiveAccount.outputs.cognitiveAccountEndpoint
+output AZURE_FUNCTION_APP_ENDPOINT string = 'https://${functionApp.outputs.functionAppName}.azurewebsites.net'
+output AZURE_STORAGE_ACCOUNT_ENDPOINT string = storage.outputs.storageAccountEndpoint
+output AZURE_STORAGE_ACCOUNT_ID string = storage.outputs.storageAccountId
