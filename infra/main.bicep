@@ -168,6 +168,7 @@ module functionApp './core/web/functionApp.bicep' = {
     storageAccountName: storage.outputs.storageAccountName
     appServicePlanName: appServicePlan.outputs.appServicePlanName
     location: location
+    tags: union(tags, { 'azd-service-name': 'custom-skills' })
   }
 }
 
@@ -180,6 +181,7 @@ module webApp './core/web/webApp.bicep' = {
     runtime: 'DOTNET|8.0'
     appServicePlanName: appServicePlan2.outputs.appServicePlanName
     location: location
+    tags: union(tags, { 'azd-service-name': 'mvc' })
   }
 }
 
