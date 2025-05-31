@@ -115,9 +115,7 @@ module cosmosSqlDatabase './core/db/cosmosSqlDatabase.bicep' = {
     databaseName: 'deid'
     throughput: 1000
   }
-  dependsOn: [
-    cosmosDb
-  ]
+
 }
 
 // Create a cosmos db SQL container
@@ -197,8 +195,8 @@ module aoai './core/ai/aoai.bicep' = {
 }
 
 resource storageBlobContributorRoleAssignmentFunctionApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(functionApp.outputs.functionAppId, 'Storage Blob Data Contributor')
-  scope: storage
+  name: guid(storage.outputs.storageAccountId, functionApp.outputs.functionAppName, 'Storage Blob Data Contributor')
+  scope: resourceGroup()
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
     principalId: functionApp.outputs.functionAppPrincipalId
@@ -207,8 +205,8 @@ resource storageBlobContributorRoleAssignmentFunctionApp 'Microsoft.Authorizatio
 }
 
 resource storageBlobContributorRoleAssignmentWebApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(webApp.outputs.webAppId, 'Storage Blob Data Contributor') 
-  scope: storage
+  name: guid(storage.outputs.storageAccountId, webApp.outputs.webAppName, 'Storage Blob Data Contributor')
+  scope: resourceGroup()
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
     principalId: webApp.outputs.webAppPrincipalId
