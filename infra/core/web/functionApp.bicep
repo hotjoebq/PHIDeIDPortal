@@ -12,6 +12,8 @@ param storageAccountName string
 param appServicePlanName string
 @description('Location for the Function App')
 param location string = resourceGroup().location
+@description('Tags to apply to the Function App')
+param tags object = {}
 
 
 // resource existingStorage 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
@@ -23,6 +25,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: functionAppName
   location: location
   kind: 'functionapp'
+  tags: tags
   properties: {
     serverFarmId: resourceId('Microsoft.Web/serverfarms', appServicePlanName)
     siteConfig: {

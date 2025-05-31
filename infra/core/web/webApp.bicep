@@ -6,11 +6,14 @@ param runtime string = 'DOTNET|8.0'
 param appServicePlanName string
 @description('Location for the Web App')
 param location string = resourceGroup().location
+@description('Tags to apply to the Web App')
+param tags object = {}
 
 resource webApp 'Microsoft.Web/sites@2022-03-01' = {
   name: webAppName
   location: location
   kind: 'app'
+  tags: tags
   properties: {
     serverFarmId: resourceId('Microsoft.Web/serverfarms', appServicePlanName)
     siteConfig: {
