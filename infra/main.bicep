@@ -194,23 +194,23 @@ module aoai './core/ai/aoai.bicep' = {
   }
 }
 
-resource storageBlobContributorRoleAssignmentFunctionApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(storage.outputs.storageAccountId, functionApp.outputs.functionAppName, 'Storage Blob Data Contributor')
-  scope: resourceGroup()
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+module storageBlobContributorRoleAssignmentFunctionApp './core/security/roleAssignment.bicep' = {
+  name: 'storageBlobContributorRoleAssignmentFunctionApp'
+  scope: rg
+  params: {
     principalId: functionApp.outputs.functionAppPrincipalId
-    principalType: 'ServicePrincipal'
+    roleDefinitionId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+    targetResourceId: storage.outputs.storageAccountId
   }
 }
 
-resource storageBlobContributorRoleAssignmentWebApp 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(storage.outputs.storageAccountId, webApp.outputs.webAppName, 'Storage Blob Data Contributor')
-  scope: resourceGroup()
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+module storageBlobContributorRoleAssignmentWebApp './core/security/roleAssignment.bicep' = {
+  name: 'storageBlobContributorRoleAssignmentWebApp'
+  scope: rg
+  params: {
     principalId: webApp.outputs.webAppPrincipalId
-    principalType: 'ServicePrincipal'
+    roleDefinitionId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+    targetResourceId: storage.outputs.storageAccountId
   }
 }
 
