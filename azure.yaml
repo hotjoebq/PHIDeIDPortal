@@ -6,7 +6,7 @@ metadata:
 services:
     custom-skills:
         project: src/custom-skills
-        host: functionapp
+        host: function
         language: dotnet
     mvc:
         project: src/web/ui/mvc
