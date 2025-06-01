@@ -106,6 +106,10 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'StorageAccount__Container'
           value: 'pii-sample-unstructured'
         }
+        {
+          name: 'ASPNETCORE_ENVIRONMENT'
+          value: 'Development'
+        }
       ]
     }
     httpsOnly: true
