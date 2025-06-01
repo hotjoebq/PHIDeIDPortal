@@ -45,8 +45,10 @@ namespace PhiDeidPortal.Ui.ViewComponents
 
             if (User.Identity?.Name is null) 
             {
-                var testIdentity = new System.Security.Claims.ClaimsIdentity(new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, "TestUser") }, "TestAuth");
-                ((System.Security.Claims.ClaimsPrincipal)User).AddIdentity(testIdentity);
+                var claims = new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, "TestUser") };
+                var testIdentity = new System.Security.Claims.ClaimsIdentity(claims, "TestAuth");
+                var testPrincipal = new System.Security.Claims.ClaimsPrincipal(testIdentity);
+                ViewContext.HttpContext.User = testPrincipal;
             }            
                         
 
