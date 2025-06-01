@@ -45,27 +45,27 @@ namespace PhiDeidPortal.Ui
                 options.HandleSameSiteCookieCompatibility();
             });
 
-            builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(options =>
-                {
-                    var configuration = builder.Configuration.GetSection("AzureAd");
-                    options.Instance = configuration["Instance"];
-                    options.Domain = configuration["Domain"];
-                    options.TenantId = configuration["TenantId"];
-                    options.ClientId = configuration["ClientId"];
-                    options.ClientSecret = configuration["ClientSecret"];
-                    options.CallbackPath = configuration["CallbackPath"];
-                });
+            // builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            //     .AddMicrosoftIdentityWebApp(options =>
+            //     {
+            //         var configuration = builder.Configuration.GetSection("AzureAd");
+            //         options.Instance = configuration["Instance"];
+            //         options.Domain = configuration["Domain"];
+            //         options.TenantId = configuration["TenantId"];
+            //         options.ClientId = configuration["ClientId"];
+            //         options.ClientSecret = configuration["ClientSecret"];
+            //         options.CallbackPath = configuration["CallbackPath"];
+            //     });
 
-            builder.Services.AddAuthorization();
+            // builder.Services.AddAuthorization();
 
-            builder.Services.AddControllersWithViews(options =>
-                {
-                    var policy = new AuthorizationPolicyBuilder()
-                        .RequireAuthenticatedUser()
-                        .Build();
-                    options.Filters.Add(new AuthorizeFilter(policy));
-                }).AddMicrosoftIdentityUI();
+            builder.Services.AddControllersWithViews();
+                // {
+                //     var policy = new AuthorizationPolicyBuilder()
+                //         .RequireAuthenticatedUser()
+                //         .Build();
+                //     options.Filters.Add(new AuthorizeFilter(policy));
+                // }).AddMicrosoftIdentityUI();
 
             builder.Services.AddTransient<IFeatureService, FeatureService>();
             builder.Services.AddSingleton<IBlobService, BlobService>(x =>
@@ -138,8 +138,8 @@ namespace PhiDeidPortal.Ui
 
             app.UseRouting();            
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => 
             {
