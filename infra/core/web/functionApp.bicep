@@ -14,6 +14,13 @@ param appServicePlanName string
 param location string = resourceGroup().location
 @description('Tags to apply to the Function App')
 param tags object = {}
+@description('Azure OpenAI endpoint')
+param openAiEndpoint string = ''
+@description('Azure OpenAI deployment name')
+param openAiDeploymentName string = ''
+@description('Azure OpenAI API key')
+@secure()
+param openAiApiKey string = ''
 
 
 // resource existingStorage 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
@@ -41,6 +48,22 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
           value: runtime
+        }
+        {
+          name: 'OPENAI_ENDPOINT'
+          value: openAiEndpoint
+        }
+        {
+          name: 'OPENAI_DEPLOYMENT_NAME'
+          value: openAiDeploymentName
+        }
+        {
+          name: 'OPENAI_API_KEY'
+          value: openAiApiKey
+        }
+        {
+          name: 'PII_REDACTION_PROMPT'
+          value: 'You are a PII detection system. Analyze the following text and identify all personally identifiable information (PII) including names, SSNs, phone numbers, addresses, email addresses, dates of birth, and medical record numbers. Return your response as JSON with PiiFound (boolean) and PiiDetails (array of objects with Text, Type, and Context fields).'
         }
       ]
       use32BitWorkerProcess: false

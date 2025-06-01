@@ -1,0 +1,93 @@
+{
+  "name": "unstructured-skillset",
+  "description": "Skillset for PII detection and redaction with corrected configuration",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+      "name": "OcrSkill",
+      "description": "Extract text from images",
+      "context": "/document/normalized_images/*",
+      "lineEnding": "Space",
+      "defaultLanguageCode": "en",
+      "detectOrientation": true,
+      "inputs": [
+        {
+          "name": "image",
+          "source": "/document/normalized_images/*"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "targetName": "ocrSkillOutput"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+      "name": "MergeSkill",
+      "description": "Merge text content with OCR results",
+      "context": "/document",
+      "insertPreTag": " ",
+      "insertPostTag": " ",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/content"
+        },
+        {
+          "name": "itemsToInsert",
+          "source": "/document/normalized_images/*/ocrSkillOutput"
+        },
+        {
+          "name": "offsets",
+          "source": "/document/normalized_images/*/contentOffset"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mergedText",
+          "targetName": "mergeSkillOutput"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+      "name": "OpenAiRedactionFunction",
+      "description": "Custom skill for PII detection and redaction",
+      "context": "/document",
+      "uri": "https://func-broqnvwzoti46.azurewebsites.net/api/OpenAiRedactionFunction",
+      "httpMethod": "POST",
+      "timeout": "PT2M",
+      "batchSize": 1,
+      "degreeOfParallelism": 1,
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/mergeSkillOutput"
+        },
+        {
+          "name": "maskingCharacter",
+          "source": "='*'"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "redactedText",
+          "targetName": "redactedContent"
+        },
+        {
+          "name": "redactedEntities",
+          "targetName": "piiEntities"
+        }
+      ],
+      "httpHeaders": {
+        "Content-Type": "application/json",
+        "x-functions-key": "YOUR_FUNCTION_KEY_HERE"
+      }
+    }
+  ],
+  "cognitiveServices": {
+    "@odata.type": "#Microsoft.Azure.Search.DefaultCognitiveServices"
+  }
+}

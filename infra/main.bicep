@@ -169,6 +169,9 @@ module functionApp './core/web/functionApp.bicep' = {
     appServicePlanName: appServicePlan.outputs.appServicePlanName
     location: location
     tags: union(tags, { 'azd-service-name': 'custom-skills' })
+    openAiEndpoint: aoai.outputs.aoaiEndpoint
+    openAiDeploymentName: aoai.outputs.gpt4oMiniDeploymentName
+    openAiApiKey: aoai.outputs.aoaiApiKey
   }
 }
 

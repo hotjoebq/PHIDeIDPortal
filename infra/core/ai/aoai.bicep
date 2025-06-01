@@ -44,3 +44,5 @@ output aoaiId string = aoai.id
 output aoaiEndpoint string = aoai.properties.endpoint
 output gpt4oMiniDeploymentName string = gpt4oMiniDeployment.name
 output gpt4oMiniDeploymentId string = gpt4oMiniDeployment.id
+@secure()
+output aoaiApiKey string = aoai.listKeys().key1
