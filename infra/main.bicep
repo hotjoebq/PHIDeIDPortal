@@ -224,15 +224,8 @@ module storageBlobContributorRoleAssignmentWebApp './core/security/roleAssignmen
   }
 }
 
-module cosmosDbDataContributorRoleAssignmentWebApp './core/security/roleAssignment.bicep' = {
-  name: 'cosmosDbDataContributorRoleAssignmentWebApp'
-  scope: rg
-  params: {
-    principalId: webApp.outputs.webAppPrincipalId
-    roleDefinitionId: '00000000-0000-0000-0000-000000000002'
-    targetResourceId: cosmosDb.outputs.cosmosDbId
-  }
-}
+// Note: Cosmos DB SQL role assignments need to be created post-deployment using az cosmosdb sql role assignment create
+// This is because Cosmos DB uses custom role definitions that are not standard Azure RBAC roles
 
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = subscription().tenantId
