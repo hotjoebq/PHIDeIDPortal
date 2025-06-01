@@ -57,7 +57,7 @@ namespace PhiDeidPortal.Ui
             //         options.CallbackPath = configuration["CallbackPath"];
             //     });
 
-            // builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization();
 
             builder.Services.AddControllersWithViews();
                 // {
@@ -139,7 +139,7 @@ namespace PhiDeidPortal.Ui
             app.UseRouting();            
 
             // app.UseAuthentication();
-            // app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => 
             {
