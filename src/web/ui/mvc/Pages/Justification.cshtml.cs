@@ -9,7 +9,6 @@ using IAuthorizationService = PhiDeidPortal.Ui.Services.IAuthorizationService;
 
 namespace PhiDeidPortal.Ui.Pages
 {
-    [Authorize]
     [FeatureGate(Feature.JustificationView)]
     public class JustificationModel(IAuthorizationService authorizationService, IAISearchService searchService, IFeatureService featureService, ICosmosService cosmosService) : PageModel
     {

@@ -9,7 +9,6 @@ using IAuthorizationService = PhiDeidPortal.Ui.Services.IAuthorizationService;
 
 namespace PhiDeidPortal.Ui.Pages
 {
-    [Authorize]
     [FeatureGate(Feature.DeniedView)]
     public class DeniedModel(IAuthorizationService authorizationService, IAISearchService searchService, IFeatureService featureService) : PageModel
     {

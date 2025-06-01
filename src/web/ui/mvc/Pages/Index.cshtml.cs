@@ -7,7 +7,6 @@ using IAuthorizationService = PhiDeidPortal.Ui.Services.IAuthorizationService;
 
 namespace PhiDeidPortal.Ui.Pages
 {
-    [Authorize]
     [FeatureGate(Feature.AllDocumentsView)]
     public class IndexModel(IAuthorizationService authorizationService, ICosmosService cosmosService) : PageModel
     {

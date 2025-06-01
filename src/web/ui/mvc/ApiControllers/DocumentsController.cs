@@ -11,7 +11,6 @@ using System.Text.RegularExpressions;
 namespace PhiDeidPortal.Ui.Controllers
 {
     [ApiController]
-    [Authorize]
     public class DocumentsController : ControllerBase
     {
         private readonly IBlobService _blobService;

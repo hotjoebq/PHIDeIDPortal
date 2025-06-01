@@ -9,7 +9,6 @@ using IAuthorizationService = PhiDeidPortal.Ui.Services.IAuthorizationService;
 
 namespace PhiDeidPortal.Ui.Pages
 {
-    [Authorize]
     [FeatureGate(Feature.ManualReviewView)]
     public class ReviewModel(IAuthorizationService authorizationService, IAISearchService searchService, ICosmosService cosmosService, IFeatureService featureService) : PageModel
     {
