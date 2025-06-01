@@ -35,6 +35,26 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
           value: cosmosEndpoint
         }
         {
+          name: 'CosmosDb__Endpoint'
+          value: cosmosEndpoint
+        }
+        {
+          name: 'CosmosDb__DatabaseId'
+          value: 'deid'
+        }
+        {
+          name: 'CosmosDb__ContainerId'
+          value: 'metadata'
+        }
+        {
+          name: 'CosmosDb__PartitionKey'
+          value: '/Uri'
+        }
+        {
+          name: 'CosmosDb__UseEntraAuth'
+          value: 'true'
+        }
+        {
           name: 'AZURE_SEARCH_SERVICE_ENDPOINT'
           value: searchServiceEndpoint
         }
@@ -43,12 +63,48 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
           value: searchServiceApiKey
         }
         {
+          name: 'SearchService__Uri'
+          value: searchServiceEndpoint
+        }
+        {
+          name: 'SearchService__ApiKey'
+          value: searchServiceApiKey
+        }
+        {
+          name: 'SearchService__IndexName'
+          value: 'piiredaction'
+        }
+        {
+          name: 'SearchService__DefaultIndexerName'
+          value: 'piiredaction-unstructured'
+        }
+        {
+          name: 'SearchService__ReindexOnUpload'
+          value: 'true'
+        }
+        {
           name: 'AZURE_STORAGE_ACCOUNT_ENDPOINT'
           value: storageAccountEndpoint
         }
         {
           name: 'AZURE_STORAGE_ACCOUNT_NAME'
           value: storageAccountName
+        }
+        {
+          name: 'StorageAccount__Uri'
+          value: storageAccountEndpoint
+        }
+        {
+          name: 'StorageAccount__AccountName'
+          value: storageAccountName
+        }
+        {
+          name: 'StorageAccount__UseManagedIdentity'
+          value: 'true'
+        }
+        {
+          name: 'StorageAccount__Container'
+          value: 'pii-sample-unstructured'
         }
       ]
     }
