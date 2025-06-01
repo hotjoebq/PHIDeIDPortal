@@ -8,6 +8,17 @@ param appServicePlanName string
 param location string = resourceGroup().location
 @description('Tags to apply to the Web App')
 param tags object = {}
+@description('Azure Cosmos DB endpoint')
+param cosmosEndpoint string = ''
+@description('Azure Search Service endpoint')
+param searchServiceEndpoint string = ''
+@description('Azure Search Service API key')
+@secure()
+param searchServiceApiKey string = ''
+@description('Azure Storage Account endpoint')
+param storageAccountEndpoint string = ''
+@description('Azure Storage Account name')
+param storageAccountName string = ''
 
 resource webApp 'Microsoft.Web/sites@2022-03-01' = {
   name: webAppName
@@ -18,6 +29,28 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
     serverFarmId: resourceId('Microsoft.Web/serverfarms', appServicePlanName)
     siteConfig: {
       windowsFxVersion: runtime
+      appSettings: [
+        {
+          name: 'AZURE_COSMOS_ENDPOINT'
+          value: cosmosEndpoint
+        }
+        {
+          name: 'AZURE_SEARCH_SERVICE_ENDPOINT'
+          value: searchServiceEndpoint
+        }
+        {
+          name: 'AZURE_SEARCH_SERVICE_API_KEY'
+          value: searchServiceApiKey
+        }
+        {
+          name: 'AZURE_STORAGE_ACCOUNT_ENDPOINT'
+          value: storageAccountEndpoint
+        }
+        {
+          name: 'AZURE_STORAGE_ACCOUNT_NAME'
+          value: storageAccountName
+        }
+      ]
     }
     httpsOnly: true
   }

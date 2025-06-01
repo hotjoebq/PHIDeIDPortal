@@ -185,6 +185,11 @@ module webApp './core/web/webApp.bicep' = {
     appServicePlanName: appServicePlan2.outputs.appServicePlanName
     location: location
     tags: union(tags, { 'azd-service-name': 'mvc' })
+    cosmosEndpoint: cosmosDb.outputs.cosmosDbEndpoint
+    searchServiceEndpoint: searchService.outputs.searchServiceEndpoint
+    searchServiceApiKey: searchService.outputs.searchServiceApiKey
+    storageAccountEndpoint: storage.outputs.storageAccountEndpoint
+    storageAccountName: storage.outputs.storageAccountName
   }
 }
 
