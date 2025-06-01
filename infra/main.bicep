@@ -163,7 +163,7 @@ module functionApp './core/web/functionApp.bicep' = {
   params: {
     functionAppName: '${abbrevs.webSitesFunctions}${resourceToken}'
     // osType: 'Windows'
-    runtime: 'dotnet'
+    runtime: 'dotnet-isolated'
     // roleAssignmentScope: storage //.outputs.storageObjectSymbolic
     storageAccountName: storage.outputs.storageAccountName
     appServicePlanName: appServicePlan.outputs.appServicePlanName

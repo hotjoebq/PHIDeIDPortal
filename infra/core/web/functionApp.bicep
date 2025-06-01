@@ -3,7 +3,7 @@ param functionAppName string = 'functionappname'
 // @description('OS type for the Function App')
 // param osType string = 'Windows'
 @description('Runtime for the Function App')
-param runtime string = 'dotnet'
+param runtime string = 'dotnet-isolated'
 // @description('Storage account resource for the Function App')
 // param roleAssignmentScope resource 'Microsoft.Storage/storageAccounts@2023-01-01'
 @description('Storage account name for the Function App')
