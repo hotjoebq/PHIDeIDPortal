@@ -224,6 +224,16 @@ module storageBlobContributorRoleAssignmentWebApp './core/security/roleAssignmen
   }
 }
 
+module cosmosDbDataContributorRoleAssignmentWebApp './core/security/roleAssignment.bicep' = {
+  name: 'cosmosDbDataContributorRoleAssignmentWebApp'
+  scope: rg
+  params: {
+    principalId: webApp.outputs.webAppPrincipalId
+    roleDefinitionId: '00000000-0000-0000-0000-000000000002'
+    targetResourceId: cosmosDb.outputs.cosmosDbId
+  }
+}
+
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = subscription().tenantId
 output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId
