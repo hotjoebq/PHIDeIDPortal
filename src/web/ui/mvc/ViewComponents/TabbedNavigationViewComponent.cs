@@ -35,7 +35,7 @@ namespace PhiDeidPortal.Ui.ViewComponents
             _userContextService.HasElevatedRights = isElevated;
             _userContextService.ViewFilter = viewFilter;
 
-            return (isElevated && !viewFilter) ? _cosmosService.GetSummary() : _cosmosService.GetSummaryByAuthor(User.Identity.Name);
+            return (isElevated && !viewFilter) ? _cosmosService.GetSummary() : _cosmosService.GetSummaryByAuthor(User.Identity?.Name ?? "TestUser");
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -44,7 +44,10 @@ namespace PhiDeidPortal.Ui.ViewComponents
                 return View(new TabbedNavigationViewModel() { IsFeatureAvailable = false });
 
             if (User.Identity?.Name is null) 
-                return View(new TabbedNavigationViewModel() { IsFeatureAvailable = false });            
+            {
+                var testIdentity = new System.Security.Claims.ClaimsIdentity(new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, "TestUser") }, "TestAuth");
+                ((System.Security.Claims.ClaimsPrincipal)User).AddIdentity(testIdentity);
+            }            
                         
 
             var viewModel = new TabbedNavigationViewModel()

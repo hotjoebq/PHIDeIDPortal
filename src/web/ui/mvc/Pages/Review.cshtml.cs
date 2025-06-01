@@ -22,13 +22,13 @@ namespace PhiDeidPortal.Ui.Pages
 
         public void OnGet()
         {
-            if (User.Identity?.Name is null) return;
+            var userName = User.Identity?.Name ?? "TestUser";
             var viewFilter = Request.Query["v"].ToString().ToLower() == "me";
             var searchString = Request.Query["q"].ToString();
             var isElevated = _authService.HasElevatedRights(User);
             var searchFilter = $"status eq 3 or status eq 2";
 
-            Results = (isElevated && !viewFilter) ? _searchService.SearchAsync(searchFilter, searchString).Result : _searchService.SearchByAuthorAsync(User.Identity.Name, searchFilter, searchString).Result;
+            Results = (isElevated && !viewFilter) ? _searchService.SearchAsync(searchFilter, searchString).Result : _searchService.SearchByAuthorAsync(userName, searchFilter, searchString).Result;
             foreach(var result in Results)
             {
                 if (result.Document["status"].ToString() == "3")

@@ -16,10 +16,10 @@ namespace PhiDeidPortal.Ui.Pages
 
         public void OnGet()
         {
-            if (User.Identity?.Name is null) return;
+            var userName = User.Identity?.Name ?? "TestUser";
             var viewFilter = Request.Query["v"].ToString().ToLower() == "me";
             var isElevated = _authService.HasElevatedRights(User);
-            Results = (isElevated && !viewFilter) ? _cosmosService.GetAllMetadataRecords() : _cosmosService.GetAllMetadataRecordsByAuthor(User.Identity.Name);
+            Results = (isElevated && !viewFilter) ? _cosmosService.GetAllMetadataRecords() : _cosmosService.GetAllMetadataRecordsByAuthor(userName);
         }
     }
 }

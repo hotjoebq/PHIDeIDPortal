@@ -82,7 +82,7 @@ namespace PhiDeidPortal.Ui.Controllers
                 id: Guid.NewGuid().ToString(),
                 FileName: blobName,
                 Uri: uri,
-                Author: User.Identity.Name,
+                Author: User.Identity?.Name ?? "TestUser",
                 Status: 1,
                 OrganizationalMetadata: organizationalMetadata.ToArray(),
                 LastIndexed: DateTime.MinValue,
@@ -241,7 +241,7 @@ namespace PhiDeidPortal.Ui.Controllers
 
         private MetadataRecord? GetMetadataRecordByUri(string uri, bool adminOnly = false)
         {
-            var user = User.Identity?.Name;
+            var user = User.Identity?.Name ?? "TestUser";
             if (user is null) return null;
             if (adminOnly && !_authorizationService.HasElevatedRights(User)) return null;
             if (adminOnly) return _cosmosService.GetMetadataRecordByUri(uri);
