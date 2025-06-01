@@ -57,6 +57,8 @@ namespace PhiDeidPortal.Ui
                     options.CallbackPath = configuration["CallbackPath"];
                 });
 
+            builder.Services.AddAuthorization();
+
             builder.Services.AddControllersWithViews(options =>
                 {
                     var policy = new AuthorizationPolicyBuilder()
