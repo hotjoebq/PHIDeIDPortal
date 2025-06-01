@@ -110,6 +110,30 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'ASPNETCORE_ENVIRONMENT'
           value: 'Development'
         }
+        {
+          name: 'AzureAd__Instance'
+          value: 'https://login.microsoftonline.com/'
+        }
+        {
+          name: 'AzureAd__Domain'
+          value: 'microsoft.com'
+        }
+        {
+          name: 'AzureAd__TenantId'
+          value: 'f8cdef31-a31e-4b4a-93e4-5f571e91255a'
+        }
+        {
+          name: 'AzureAd__ClientId'
+          value: 'placeholder-client-id'
+        }
+        {
+          name: 'AzureAd__CallbackPath'
+          value: '/signin-oidc'
+        }
+        {
+          name: 'AzureAd__SignedOutCallbackPath'
+          value: '/signout-callback-oidc'
+        }
       ]
     }
     httpsOnly: true
